@@ -70,6 +70,24 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$Data->set( MWF_Config::CONFIRM_BUTTON, true );
 
 		$this->assertSame( 'input', $Data->get_post_condition() );
+
+		$Data->set_view_flg( 'input' );
+		$this->assertSame( 'input', $Data->get_post_condition() );
+	}
+
+	/**
+	 * @test
+	 * @group get_post_condition
+	 */
+	public function get_post_condition_retains_redirected_view() {
+		$Data = $this->_instantiation_Data();
+		$Data->set( MWF_Config::TOKEN_NAME, 'previous-request-token' );
+
+		$Data->set_view_flg( 'confirm' );
+		$this->assertSame( 'confirm', $Data->get_post_condition() );
+
+		$Data->set_view_flg( 'complete' );
+		$this->assertSame( 'complete', $Data->get_post_condition() );
 	}
 
 	/**
