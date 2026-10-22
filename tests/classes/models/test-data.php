@@ -60,6 +60,20 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
+	 * @group get_post_condition
+	 */
+	public function get_post_condition_ignores_values_saved_in_session() {
+		$Data = $this->_instantiation_Data();
+		$Data->set( MWF_Config::TOKEN_NAME, 'previous-request-token' );
+		$this->assertSame( 'input', $Data->get_post_condition() );
+
+		$Data->set( MWF_Config::CONFIRM_BUTTON, true );
+
+		$this->assertSame( 'input', $Data->get_post_condition() );
+	}
+
+	/**
+	 * @test
 	 * @group gets
 	 */
 	public function gets() {

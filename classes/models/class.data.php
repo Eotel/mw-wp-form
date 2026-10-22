@@ -213,9 +213,12 @@ class MW_WP_Form_Data {
 	 * @return string back|confirm|complete|input
 	 */
 	public function get_post_condition() {
-		$backButton    = $this->get_post_value_by_key( MWF_Config::BACK_BUTTON );
-		$confirmButton = $this->get_post_value_by_key( MWF_Config::CONFIRM_BUTTON );
-		$request_token = $this->get_post_value_by_key( MWF_Config::TOKEN_NAME );
+		// Session values are kept for the next page, but only the current POST
+		// can indicate which form button was submitted. In particular, a token
+		// from an invalid POST must not turn the following GET into "complete".
+		$backButton    = isset( $this->POST[ MWF_Config::BACK_BUTTON ] ) ? $this->POST[ MWF_Config::BACK_BUTTON ] : null;
+		$confirmButton = isset( $this->POST[ MWF_Config::CONFIRM_BUTTON ] ) ? $this->POST[ MWF_Config::CONFIRM_BUTTON ] : null;
+		$request_token = isset( $this->POST[ MWF_Config::TOKEN_NAME ] ) ? $this->POST[ MWF_Config::TOKEN_NAME ] : null;
 
 		if ( $backButton ) {
 			return 'back';
